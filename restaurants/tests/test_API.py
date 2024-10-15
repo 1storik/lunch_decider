@@ -57,7 +57,7 @@ def test_vote_for_menu(api_client, create_user, create_restaurant):
 
     api_client.force_authenticate(user=user)
 
-    url = reverse('vote-list')  # This URL name should remain unchanged
+    url = reverse('vote-list')
     data = {"menu": menu.id}
     response = api_client.post(url, data)
 
@@ -81,7 +81,7 @@ def test_get_current_day_results(api_client, create_user, create_restaurant):
 
     api_client.force_authenticate(user=user1)
 
-    url = reverse('current_results')  # Correct URL name
+    url = reverse('current_results')
     response = api_client.get(url)
 
     assert response.status_code == status.HTTP_200_OK
@@ -105,7 +105,7 @@ def test_create_employee(api_client, create_user):
     response = api_client.post(url, data)
 
     assert response.status_code == status.HTTP_201_CREATED
-    assert User.objects.count() == 2  # Теперь мы ожидаем 2 пользователя: admin и testemployee
+    assert User.objects.count() == 2
     assert User.objects.get(username="testemployee").groups.filter(name="Employee").exists()
 
 
@@ -134,7 +134,6 @@ def test_create_admin(api_client, create_user):
 
 @pytest.mark.django_db
 def test_restaurant_serializer():
-    # Создание ресторана для тестирования
     restaurant = Restaurant.objects.create(name="Test Restaurant", description="A test restaurant")
 
     serializer = RestaurantSerializer(instance=restaurant)
