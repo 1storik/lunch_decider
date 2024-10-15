@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: lunch_decider_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - lunch_network
+
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/lunch_decider
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    networks:
+      - lunch_network
+
+  test:
+    build: .
+    command: pytest -v
+    volumes:
+      - .:/lunch_decider
+    depends_on:
+      - db
+    networks:
+      - lunch_network
+
+networks:
+  lunch_network:
+
+volumes:
+  postgres_data:
