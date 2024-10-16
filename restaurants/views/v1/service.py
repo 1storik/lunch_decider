@@ -19,7 +19,8 @@ class MenuService:
     def get_restaurant_and_dishes(dish_ids, api_key):
 
         if api_key is None or api_key == '':
-            raise serializers.ValidationError({"error": "API key is required."})
+            raise serializers.ValidationError({"error": "x-api-key is required in header. "
+                                                        "The API administrator can give it to you"})
         if not dish_ids or dish_ids == []:
             raise serializers.ValidationError({"error": "At least one dish is required."})
         try:
@@ -38,7 +39,8 @@ class DishService:
     @staticmethod
     def create_dishes(api_key):
         if api_key is None or api_key == '':
-            raise serializers.ValidationError({"error": "API key is required."})
+            raise serializers.ValidationError({"error": "x-api-key is required in header. "
+                                                        "The API administrator can give it to you"})
         try:
             restaurant = Restaurant.objects.get(api_key=api_key)
         except Restaurant.DoesNotExist:
